@@ -1,3 +1,5 @@
+// GTM Tag - cHTML - Set Checkout Data into localStorage
+
 var mainElement = document.querySelector(
   "#new_checkout_offer > div > div > div:nth-child(2) > div.col-md-offset-1.col-md-5.checkout-content-left > div > div.panel-heading > h1"
 );
@@ -51,3 +53,31 @@ var leadData = {
 
 window.localStorage.setItem("value", value);
 window.localStorage.setItem("leadData", JSON.stringify(leadData));
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// GTM Tag - cHTML - Get Stored Data from localStorage
+
+var value = parseFloat(window.localStorage.getItem("value"));
+var usersInfo = JSON.parse(window.localStorage.getItem("leadData"));
+
+var items = [
+  {
+    item_name: "The Brave Way Membership",
+    price: value,
+    quantity: 1,
+  },
+];
+
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({
+  event: "newPurchase",
+  ecommerce: {
+    value: value,
+    currency: "USD",
+    items: items,
+  },
+  email: usersInfo && usersInfo.email ? usersInfo.email : "",
+  firstName: usersInfo && usersInfo.first_name ? usersInfo.first_name : "",
+  lastName: usersInfo && usersInfo.last_name ? usersInfo.last_name : "",
+});
